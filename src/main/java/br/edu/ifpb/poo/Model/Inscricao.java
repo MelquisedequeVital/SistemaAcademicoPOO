@@ -84,7 +84,7 @@ public class Inscricao {
 
     @Override
     public String toString(){
-        return "Aluno: " + aluno.toString() + "\nComponente Formativo: " + componenteFormativo.toString(); 
+        return "[" + this.id + "]" + "Aluno: " + aluno.toString() + " | " + "Componente Formativo: " + componenteFormativo.toString(); 
     }
 
 

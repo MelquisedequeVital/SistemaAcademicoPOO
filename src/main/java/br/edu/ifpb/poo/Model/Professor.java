@@ -26,7 +26,7 @@ public class Professor {
     
     public void removeAtribuicao(String codigo){
         ComponenteFormativo atribuicao = atribuicoes.stream()
-                .filter(atr -> atr.getCodigo() == codigo)
+                .filter(atr -> atr.getCodigo().equals(codigo))
                 .findFirst()
                 .orElse(null);
         
