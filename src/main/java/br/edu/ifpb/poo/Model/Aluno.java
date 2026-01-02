@@ -24,7 +24,6 @@ public class Aluno {
         inscricoes.add(insc);
     }
 
-    //to-do:Criação de AlunoException
     public void removerInscricao(String codigo){
         Inscricao inscricaoEncontrada = inscricoes.stream()
         .filter(inscricao -> inscricao.getComponenteFormativo().getCodigo().equals(codigo)) 

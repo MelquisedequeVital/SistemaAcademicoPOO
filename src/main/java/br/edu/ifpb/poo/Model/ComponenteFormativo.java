@@ -3,6 +3,7 @@ package br.edu.ifpb.poo.Model;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.edu.ifpb.poo.Model.Enum.SituacaoInscricao;
 import lombok.Data;
 
 @Data
@@ -25,7 +26,6 @@ public abstract class ComponenteFormativo {
         inscricoes.add(insc);
     }
 
-    //to-do: Criação de ComponenteFormativoException
     public void desinscreverAluno(int matricula) {
         Inscricao inscricaoEncontrada = inscricoes.stream()
                 .filter(insc -> insc.getAluno().getMatricula() == matricula)
@@ -37,5 +37,11 @@ public abstract class ComponenteFormativo {
         }
     }
 
-    public abstract Double obterMediaFinal(Inscricao inscricao);
+    public void setProfessor(Professor professor){
+        this.professor = professor;
+        professor.addAtribuicao(this);
+    }
+
+    public abstract Double calcularMediaFinal(List<Double> notas);
+    public abstract SituacaoInscricao verificarSituacao(Double media, int qtdNotas);
 }
