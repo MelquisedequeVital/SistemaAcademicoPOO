@@ -5,6 +5,7 @@ import java.util.List;
 
 import br.edu.ifpb.poo.Model.Enum.SituacaoInscricao;
 import static br.edu.ifpb.poo.Model.Enum.SituacaoInscricao.APROVADO;
+import static br.edu.ifpb.poo.Model.Enum.SituacaoInscricao.EM_CURSO;
 import static br.edu.ifpb.poo.Model.Enum.SituacaoInscricao.FINAL;
 import static br.edu.ifpb.poo.Model.Enum.SituacaoInscricao.REPROVADO;
 import lombok.Data;
@@ -16,14 +17,16 @@ public abstract class ComponenteFormativo {
     private String nome;
     private Professor professor;
     private List<Inscricao> inscricoes;
+    protected int qtdAvaliacoes;
     protected static final int NOTA_MINIMA_APROVACAO = 7;
     protected static final int NOTA_MINIMA_FINAL = 4;
 
-    public ComponenteFormativo(String codigo, String nome, Professor prof) {
+    public ComponenteFormativo(String codigo, String nome, Professor prof, int qtdAvaliacoes) {
         this.codigo = codigo;
         this.nome = nome;
         this.professor = prof;
         this.inscricoes = new ArrayList<>();
+        this.qtdAvaliacoes = qtdAvaliacoes;
     }
 
     public void inscreverAluno(Inscricao insc) {
@@ -41,25 +44,29 @@ public abstract class ComponenteFormativo {
         }
     }
 
-    public void setProfessor(Professor professor){
+    public void setProfessor(Professor professor) {
         this.professor = professor;
         professor.addAtribuicao(this);
     }
-    
-    //to-do: Adicionar logica da quantidade de notas
-    public SituacaoInscricao verificarSituacao(Double media, int qtdNotas){
+
+    public SituacaoInscricao verificarSituacao(Double media, int qtdNotas) {
         SituacaoInscricao situacaoAtual;
 
-        if(media >= NOTA_MINIMA_APROVACAO){
-            situacaoAtual = APROVADO;
-        } else if(media >= NOTA_MINIMA_FINAL){
-            situacaoAtual = FINAL;
+        if (qtdNotas == qtdAvaliacoes) {
+            if (media >= NOTA_MINIMA_APROVACAO) {
+                situacaoAtual = APROVADO;
+            } else if (media >= NOTA_MINIMA_FINAL) {
+                situacaoAtual = FINAL;
+            } else {
+                situacaoAtual = REPROVADO;
+            }
         } else {
-            situacaoAtual = REPROVADO;
+            situacaoAtual = EM_CURSO;
         }
-        
+
         return situacaoAtual;
 
     }
+
     public abstract Double calcularMediaFinal(List<Double> notas);
 }

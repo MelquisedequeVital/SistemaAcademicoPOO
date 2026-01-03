@@ -10,11 +10,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @NoArgsConstructor
 @Data
 public class Inscricao {
-    
 
     private Aluno aluno;
     private ComponenteFormativo componenteFormativo;
@@ -25,7 +23,7 @@ public class Inscricao {
     @Setter(AccessLevel.NONE)
     private String id;
 
-    public Inscricao(Aluno aluno, ComponenteFormativo componenteFormativo){
+    public Inscricao(Aluno aluno, ComponenteFormativo componenteFormativo) {
         this.aluno = aluno;
         this.componenteFormativo = componenteFormativo;
         this.id = aluno.getMatricula() + componenteFormativo.getCodigo();
@@ -33,25 +31,25 @@ public class Inscricao {
         this.statusAluno = EM_CURSO;
     }
 
-
-    public void addNota(Double nota){
-        if(nota != null){
-            notas.add(nota);
-            atualizarStatusAluno();
+    public void addNota(Double nota) {
+        if (nota != null) {
+            if (notas.size() < componenteFormativo.getQtdAvaliacoes()) {
+                notas.add(nota);
+                atualizarStatusAluno();
+            }
         }
-        
     }
 
-    public void removeNota(int posicao){
-        if(posicao >= 0 && posicao < notas.size()){
+    public void removeNota(int posicao) {
+        if (posicao >= 0 && posicao < notas.size()) {
             notas.remove(posicao);
             atualizarStatusAluno();
         }
-        
+
     }
 
-    public void atualizarNota(int posicao, Double novaNota){
-        if(posicao >= 0 && posicao < notas.size() && novaNota != null){
+    public void atualizarNota(int posicao, Double novaNota) {
+        if (posicao >= 0 && posicao < notas.size() && novaNota != null) {
             notas.set(posicao, novaNota);
             atualizarStatusAluno();
         }
@@ -62,31 +60,27 @@ public class Inscricao {
         this.statusAluno = componenteFormativo.verificarSituacao(media, notas.size());
     }
 
-
-    public Double obterMediaFinal(){
+    public Double obterMediaFinal() {
         return componenteFormativo.calcularMediaFinal(notas);
     }
 
     public List<Double> getNotas() {
-    return new ArrayList<>(this.notas);
+        return new ArrayList<>(this.notas);
     }
 
     public String obterStringAluno() {
-    return String.format("Aluno: %s | Média: %.2f | Status: %s", 
-            aluno.toString(), obterMediaFinal(), statusAluno);
+        return String.format("Aluno: %s | Média: %.2f | Status: %s",
+                aluno.toString(), obterMediaFinal(), statusAluno);
     }
 
     public String obterStringComponenteFormativo() {
-    return String.format("Disciplina: %s | Status: %s", 
-            componenteFormativo.toString(), statusAluno);
+        return String.format("Disciplina: %s | Status: %s",
+                componenteFormativo.toString(), statusAluno);
     }
-
 
     @Override
-    public String toString(){
-        return "[" + this.id + "]" + "Aluno: " + aluno.toString() + " | " + "Componente Formativo: " + componenteFormativo.toString(); 
+    public String toString() {
+        return "[" + this.id + "]" + "Aluno: " + aluno.toString() + " | " + "Componente Formativo: " + componenteFormativo.toString();
     }
-
-
 
 }
