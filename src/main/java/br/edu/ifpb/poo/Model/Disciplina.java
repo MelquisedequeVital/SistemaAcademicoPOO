@@ -2,7 +2,7 @@ package br.edu.ifpb.poo.Model;
 
 import java.util.List;
 
-import br.edu.ifpb.poo.Model.Enum.ModalidadeDisciplina;
+import br.edu.ifpb.poo.Model.Enums.ModalidadeDisciplina;
 import lombok.Getter;
 import lombok.Setter;
 

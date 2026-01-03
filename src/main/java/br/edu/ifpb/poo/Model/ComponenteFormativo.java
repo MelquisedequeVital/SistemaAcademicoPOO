@@ -3,13 +3,13 @@ package br.edu.ifpb.poo.Model;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.edu.ifpb.poo.Model.Enum.SituacaoInscricao;
-import static br.edu.ifpb.poo.Model.Enum.SituacaoInscricao.APROVADO;
-import static br.edu.ifpb.poo.Model.Enum.SituacaoInscricao.EM_CURSO;
-import static br.edu.ifpb.poo.Model.Enum.SituacaoInscricao.FINAL;
-import static br.edu.ifpb.poo.Model.Enum.SituacaoInscricao.REPROVADO;
+import br.edu.ifpb.poo.Model.Enums.SituacaoInscricao;
+import static br.edu.ifpb.poo.Model.Enums.SituacaoInscricao.APROVADO;
+import static br.edu.ifpb.poo.Model.Enums.SituacaoInscricao.EM_CURSO;
+import static br.edu.ifpb.poo.Model.Enums.SituacaoInscricao.FINAL;
+import static br.edu.ifpb.poo.Model.Enums.SituacaoInscricao.REPROVADO;
 import lombok.Data;
-
+//sugestão: Criar interface para diminuir acoplamento e aumentar dimensionalidade
 @Data
 public abstract class ComponenteFormativo {
 

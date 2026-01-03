@@ -3,8 +3,8 @@ package br.edu.ifpb.poo.Model;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.edu.ifpb.poo.Model.Enum.SituacaoInscricao;
-import static br.edu.ifpb.poo.Model.Enum.SituacaoInscricao.EM_CURSO;
+import br.edu.ifpb.poo.Model.Enums.SituacaoInscricao;
+import static br.edu.ifpb.poo.Model.Enums.SituacaoInscricao.EM_CURSO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,15 +15,14 @@ public class Inscricao {
     private final ComponenteFormativo componenteFormativo;
     @Setter
     private List<Double> notas;
+    private int periodo;
     private SituacaoInscricao statusAluno;
-    private String id;
+    private final String id;
 
-    public Inscricao(Aluno aluno, ComponenteFormativo componenteFormativo) {
+    public Inscricao(Aluno aluno, ComponenteFormativo componenteFormativo, int periodo) {
         this.aluno = aluno;
         this.componenteFormativo = componenteFormativo;
-
-        //mudar regra para evitar duas inscrições com idS iguais
-        this.id = aluno.getMatricula() + componenteFormativo.getCodigo();
+        this.id = periodo + aluno.getMatricula() + componenteFormativo.getCodigo();
         this.notas = new ArrayList<>();
         this.statusAluno = EM_CURSO;
     }
@@ -57,7 +56,7 @@ public class Inscricao {
         this.statusAluno = componenteFormativo.verificarSituacao(media, notas.size());
     }
 
-    //To-do: a Inscricao poderia apenas fornecer os dados e o ComponenteFormativo retornar um objeto de "Resultado" que contém tanto a média quanto o status, reduzindo as chamadas de ida e volta entre as classes.
+    //sugestão: a Inscricao poderia apenas fornecer os dados e o ComponenteFormativo retornar um objeto de "Resultado" que contém tanto a média quanto o status, reduzindo as chamadas de ida e volta entre as classes.
     public Double obterMediaFinal() {
         return componenteFormativo.calcularMediaFinal(notas);
     }
