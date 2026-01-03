@@ -27,7 +27,7 @@ public class Aluno {
 
     public void removerInscricao(String codigo) {
         Inscricao inscricaoEncontrada = inscricoes.stream()
-                .filter(inscricao -> inscricao.getComponenteFormativo().getCodigo().equals(codigo))
+                .filter(inscricao -> inscricao.verificaCodigoPertenceComponente(codigo))
                 .findFirst()
                 .orElse(null);
 

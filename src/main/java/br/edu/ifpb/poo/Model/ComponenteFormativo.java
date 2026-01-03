@@ -36,7 +36,7 @@ public abstract class ComponenteFormativo {
 
     public void desinscreverAluno(int matricula) {
         Inscricao inscricaoEncontrada = inscricoes.stream()
-                .filter(insc -> insc.getAluno().getMatricula() == matricula)
+                .filter(insc -> insc.verificaMatriculaPertenceAluno(matricula))
                 .findFirst()
                 .orElse(null);
 

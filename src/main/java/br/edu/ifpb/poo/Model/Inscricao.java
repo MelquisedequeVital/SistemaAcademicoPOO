@@ -66,6 +66,14 @@ public class Inscricao {
         return new ArrayList<>(this.notas);
     }
 
+    
+    public boolean verificaMatriculaPertenceAluno(int matricula) {
+        return this.aluno.getMatricula() == matricula;
+    }
+
+    public boolean verificaCodigoPertenceComponente(String codigo) {
+        return this.componenteFormativo.getCodigo().equals(codigo);
+    }
 
     public String obterStringAluno() {
         return String.format("Aluno: %s | Média: %.2f | Status: %s",
