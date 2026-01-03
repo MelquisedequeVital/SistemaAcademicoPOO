@@ -29,6 +29,7 @@ public abstract class ComponenteFormativo {
         this.qtdAvaliacoes = qtdAvaliacoes;
     }
 
+    //to-do: Verificar duplicidade
     public void inscreverAluno(Inscricao insc) {
         inscricoes.add(insc);
     }
@@ -47,6 +48,14 @@ public abstract class ComponenteFormativo {
     public void setProfessor(Professor professor) {
         this.professor = professor;
         professor.addAtribuicao(this);
+    }
+
+    public void setQtdAvaliacoes(int qtd) {
+        if (this.inscricoes.isEmpty()) {
+            this.qtdAvaliacoes = qtd;
+        } else {
+            throw new IllegalStateException("Não é possível alterar as regras com alunos já inscritos.");
+        }
     }
 
     public SituacaoInscricao verificarSituacao(Double media, int qtdNotas) {

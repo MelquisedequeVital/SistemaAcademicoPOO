@@ -17,15 +17,21 @@ public class Disciplina extends ComponenteFormativo {
         this.modalidade = mod;
     }
 
+    //to-do: criar tipo de erro para Notas(Regras de Negocio)
     @Override
     public Double calcularMediaFinal(List<Double> notas) {
-        Double somaNotas = 0.0;
+        if (notas.size() == qtdAvaliacoes) {
+            Double somaNotas = 0.0;
 
-        for (Double nota : notas) {
-            somaNotas += nota;
+            for (Double nota : notas) {
+                somaNotas += nota;
+            }
+
+            return somaNotas / this.qtdAvaliacoes;
+        } else {
+            throw new IllegalArgumentException("Quantidade de notas insuficiente");
         }
 
-        return somaNotas / notas.size();
     }
 
 }

@@ -20,6 +20,7 @@ public class Aluno {
         this.inscricoes = new ArrayList<>();
     }
 
+    //to-do: Verificar duplicidade
     public void adicionarInscricao(Inscricao insc) {
         inscricoes.add(insc);
     }
@@ -34,6 +35,8 @@ public class Aluno {
             inscricoes.remove(inscricaoEncontrada);
         }
     }
+
+  
 
     @Override
     public String toString() {

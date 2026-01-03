@@ -5,27 +5,24 @@ import java.util.List;
 
 import br.edu.ifpb.poo.Model.Enum.SituacaoInscricao;
 import static br.edu.ifpb.poo.Model.Enum.SituacaoInscricao.EM_CURSO;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import lombok.Setter;
 
-@NoArgsConstructor
-@Data
+@Getter
 public class Inscricao {
 
-    private Aluno aluno;
-    private ComponenteFormativo componenteFormativo;
+    private final Aluno aluno;
+    private final ComponenteFormativo componenteFormativo;
+    @Setter
     private List<Double> notas;
-
-    @Setter(AccessLevel.NONE)
     private SituacaoInscricao statusAluno;
-    @Setter(AccessLevel.NONE)
     private String id;
 
     public Inscricao(Aluno aluno, ComponenteFormativo componenteFormativo) {
         this.aluno = aluno;
         this.componenteFormativo = componenteFormativo;
+
+        //mudar regra para evitar duas inscrições com idS iguais
         this.id = aluno.getMatricula() + componenteFormativo.getCodigo();
         this.notas = new ArrayList<>();
         this.statusAluno = EM_CURSO;
@@ -60,6 +57,7 @@ public class Inscricao {
         this.statusAluno = componenteFormativo.verificarSituacao(media, notas.size());
     }
 
+    //To-do: a Inscricao poderia apenas fornecer os dados e o ComponenteFormativo retornar um objeto de "Resultado" que contém tanto a média quanto o status, reduzindo as chamadas de ida e volta entre as classes.
     public Double obterMediaFinal() {
         return componenteFormativo.calcularMediaFinal(notas);
     }
@@ -67,6 +65,7 @@ public class Inscricao {
     public List<Double> getNotas() {
         return new ArrayList<>(this.notas);
     }
+
 
     public String obterStringAluno() {
         return String.format("Aluno: %s | Média: %.2f | Status: %s",

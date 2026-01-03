@@ -22,7 +22,6 @@ public class Professor {
 
     public void addAtribuicao(ComponenteFormativo atribuicao) {
         this.atribuicoes.add(atribuicao);
-        atribuicao.setProfessor(this);
     }
 
     public void removeAtribuicao(String codigo) {
