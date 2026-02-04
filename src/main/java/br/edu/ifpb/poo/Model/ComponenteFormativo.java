@@ -82,5 +82,12 @@ public abstract class ComponenteFormativo {
 
     }
 
+
     public abstract Double calcularMediaFinal(List<Double> notas);
+
+    @Override
+    public String toString() {
+    // Formato sugerido: [CODIGO] Nome do Componente
+    return String.format("[%s] %s", codigo, nome);
+    }
 }

@@ -21,15 +21,18 @@ public class Estagio extends ComponenteFormativo {
         this.instituicao = instituicao;
     }
 
-    //to-do: Criação de tipo de erro para Notas(entre 0 e 10)
+    // Arquivo: src/main/java/br/edu/ifpb/poo/Model/Estagio.java
     @Override
     public Double calcularMediaFinal(List<Double> notas) {
-        if(notas != null && !notas.isEmpty()){
+        if (notas != null && !notas.isEmpty()) {
             return notas.get(0);
-        } else {
-            throw new IllegalArgumentException("Quantidade de Notas Insuficiente");
         }
-        
+        return 0.0; // Retorna 0 em vez de estourar erro se não houver nota
+    }
+
+    @Override
+    public String toString() {
+        return String.format("[%s] %s - Inst: %s", getCodigo(), getNome(), instituicao);
     }
 
 }

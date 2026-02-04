@@ -8,7 +8,6 @@ import br.edu.ifpb.poo.Model.Enums.SituacaoInscricao;
 import static br.edu.ifpb.poo.Model.Enums.SituacaoInscricao.EM_CURSO;
 import lombok.Getter;
 
-
 @Getter
 public class Inscricao {
 
@@ -28,12 +27,13 @@ public class Inscricao {
         this.statusAluno = EM_CURSO;
     }
 
+    // Local: br.edu.ifpb.poo.Model.Inscricao
     public void addNota(Double nota) {
-        if (nota != null) {
-            if (notas.size() < componenteFormativo.getQtdAvaliacoes()) {
-                notas.add(nota);
-                atualizarStatusAluno();
-            }
+        if (nota != null && notas.size() < componenteFormativo.getQtdAvaliacoes()) {
+            notas.add(nota);
+            // Atualiza o status chamando o verificarSituacao do componente
+            Double mediaParcial = obterMediaFinal();
+            this.statusAluno = componenteFormativo.verificarSituacao(mediaParcial, notas.size());
         }
     }
 
@@ -53,20 +53,28 @@ public class Inscricao {
     }
 
     private void atualizarStatusAluno() {
+        // Agora não trava mais, pois o obterMediaFinal acima trata o erro
         Double media = obterMediaFinal();
+
+        // O ComponenteFormativo já sabe que se qtdNotas < qtdAvaliacoes, 
+        // o status deve ser EM_CURSO 
         this.statusAluno = componenteFormativo.verificarSituacao(media, notas.size());
     }
 
     //sugestão: a Inscricao poderia apenas fornecer os dados e o ComponenteFormativo retornar um objeto de "Resultado" que contém tanto a média quanto o status, reduzindo as chamadas de ida e volta entre as classes.
     public Double obterMediaFinal() {
-        return componenteFormativo.calcularMediaFinal(notas);
+        try {
+            return componenteFormativo.calcularMediaFinal(notas);
+        } catch (IllegalArgumentException e) {
+            // Retorna 0.0 se não for possível calcular ainda
+            return 0.0;
+        }
     }
 
     public List<Double> getNotas() {
         return new ArrayList<>(this.notas);
     }
 
-    
     public boolean verificaMatriculaPertenceAluno(int matricula) {
         return this.aluno.getMatricula() == matricula;
     }
@@ -86,8 +94,8 @@ public class Inscricao {
     }
 
     @Override
-    public boolean equals(Object obj){
-        if(this == obj){
+    public boolean equals(Object obj) {
+        if (this == obj) {
             return true;
         }
 
@@ -104,7 +112,6 @@ public class Inscricao {
     public int hashCode() {
         return Objects.hash(id);
     }
-
 
     @Override
     public String toString() {

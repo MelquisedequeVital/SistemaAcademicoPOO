@@ -18,20 +18,25 @@ public class Disciplina extends ComponenteFormativo {
     }
 
     //to-do: criar tipo de erro para Notas(Regras de Negocio)
+    // Local: br.edu.ifpb.poo.Model.Disciplina
     @Override
     public Double calcularMediaFinal(List<Double> notas) {
-        if (notas.size() == qtdAvaliacoes) {
-            Double somaNotas = 0.0;
-
-            for (Double nota : notas) {
-                somaNotas += nota;
-            }
-
-            return somaNotas / this.qtdAvaliacoes;
-        } else {
-            throw new IllegalArgumentException("Quantidade de notas insuficiente");
+        if (notas == null || notas.isEmpty()) {
+            return 0.0; // Evita divisão por zero
         }
 
+        Double somaNotas = 0.0;
+        for (Double nota : notas) {
+            somaNotas += nota;
+        }
+
+        // Calcula a média baseada no que já foi lançado
+        return somaNotas / notas.size();
+    }
+
+    @Override
+    public String toString() {
+        return String.format("[%s] %s (%s)", getCodigo(), getNome(), modalidade);
     }
 
 }
