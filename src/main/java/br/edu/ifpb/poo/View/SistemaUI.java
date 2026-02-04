@@ -14,7 +14,6 @@ public class SistemaUI {
 
     public SistemaUI(Console console) {
         this.console = console;
-        // Atualizado com os novos casos de uso do documento de especificação [cite: 28]
         List<String> opcoes = List.of(
                 "Sair",
                 "Cadastrar Aluno", // 02
@@ -29,7 +28,7 @@ public class SistemaUI {
                 "Matricular Aluno", // 11
                 "Desmatricular Aluno", // 12
                 "Lançar Nota", // 13
-                "Apagar Notas", // 14 (Nova)
+                "Apagar Notas", // 14 
                 "Histórico do Aluno" // 15
         );
         this.menuPrincipal = new Menu("SISTEMA ACADÊMICO IFPB", opcoes);
@@ -94,7 +93,6 @@ public class SistemaUI {
         }
     }
 
-    // Arquivo: src/main/java/br/edu/ifpb/poo/View/SistemaUI.java
     public <T> T selecionarDaLista(String titulo, List<T> lista) {
         if (lista == null || lista.isEmpty()) {
             console.logErro("Lista de " + titulo + " vazia!");
@@ -141,7 +139,6 @@ public class SistemaUI {
         }
     }
 
-    // Arquivo: src/main/java/br/edu/ifpb/poo/View/SistemaUI.java
     public void exibirHistoricoAluno(Aluno aluno) {
         console.logInfo("\n--- STATUS ACADÊMICO: " + aluno.getNome().toUpperCase() + " ---");
         List<Inscricao> inscricoes = aluno.getInscricoes();
