@@ -35,20 +35,34 @@ public class SistemaEscolar {
 
     private void processarOpcao(int op) {
         switch (op) {
-            case 2 -> cadastrarAluno();
-            case 3 -> apagarAluno();
-            case 4 -> ui.listarEntidades("Alunos", db.getAlunos());
-            case 5 -> cadastrarProfessor();
-            case 6 -> apagarProfessor();
-            case 7 -> ui.listarEntidades("Professores", db.getProfessores());
-            case 8 -> cadastrarComponente();
-            case 9 -> apagarComponente();
-            case 10 -> ui.listarEntidades("Componentes", db.getComponentes());
-            case 11 -> matricularAluno();
-            case 12 -> desmatricularAluno();
-            case 13 -> registrarNota();
-            case 14 -> apagarNotas();
-            case 15 -> exibirHistoricoAluno();
+            case 2 ->
+                cadastrarAluno();
+            case 3 ->
+                apagarAluno();
+            case 4 ->
+                ui.listarEntidades("Alunos", db.getAlunos());
+            case 5 ->
+                cadastrarProfessor();
+            case 6 ->
+                apagarProfessor();
+            case 7 ->
+                ui.listarEntidades("Professores", db.getProfessores());
+            case 8 ->
+                cadastrarComponente();
+            case 9 ->
+                apagarComponente();
+            case 10 ->
+                ui.listarEntidades("Componentes", db.getComponentes());
+            case 11 ->
+                matricularAluno();
+            case 12 ->
+                desmatricularAluno();
+            case 13 ->
+                registrarNota();
+            case 14 ->
+                apagarNotas();
+            case 15 ->
+                exibirHistoricoAluno();
             default -> {
                 if (op != 1) {
                     console.logErro("Opção Inválida!");
@@ -115,11 +129,17 @@ public class SistemaEscolar {
 
         Professor prof = ui.selecionarDaLista("Professor Responsável", db.getProfessores());
         if (prof == null) {
+            console.logErro("Cadastro cancelado: Professor não selecionado.");
             return;
         }
 
         String codigo = ui.lerTexto("Código");
         String nome = ui.lerTexto("Nome/Descrição");
+
+        if (codigo == null || codigo.trim().isEmpty() || nome == null || nome.trim().isEmpty()) {
+            console.logErro("Erro: Código e Nome não podem ser vazios!");
+            return;
+        }
 
         if (db.getComponentes().stream().anyMatch(c -> c.getCodigo().equalsIgnoreCase(codigo))) {
             console.logErro("Erro: Código já cadastrado!");
@@ -130,14 +150,23 @@ public class SistemaEscolar {
 
         if (tipo == 1) {
             ModalidadeDisciplina mod = ui.selecionarModalidade();
+            if (mod == null) {
+                console.logErro("Cadastro cancelado: Modalidade não selecionada.");
+                return;
+            }
+
             int qtdAval = ui.lerInteiro("Quantidade de Avaliações (mín. 2)");
             if (qtdAval < 2) {
-                console.logErro("Disciplinas exigem no mínimo 2 avaliações.");
+                console.logErro("Erro: Disciplinas exigem no mínimo 2 avaliações.");
                 return;
             }
             novoComponente = new Disciplina(codigo, nome, prof, mod, qtdAval);
         } else {
             String instituicao = ui.lerTexto("Instituição/Empresa");
+            if (instituicao == null || instituicao.trim().isEmpty()) {
+                console.logErro("Erro: Instituição não pode ser vazia!");
+                return;
+            }
             novoComponente = new Estagio(codigo, nome, prof, instituicao);
         }
 
