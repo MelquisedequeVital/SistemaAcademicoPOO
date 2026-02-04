@@ -9,7 +9,6 @@ import static br.edu.ifpb.poo.Model.Enums.SituacaoInscricao.EM_CURSO;
 import static br.edu.ifpb.poo.Model.Enums.SituacaoInscricao.FINAL;
 import static br.edu.ifpb.poo.Model.Enums.SituacaoInscricao.REPROVADO;
 import lombok.Data;
-//sugestão: Criar interface para diminuir acoplamento e aumentar dimensionalidade
 
 @Data
 public abstract class ComponenteFormativo {
@@ -30,7 +29,6 @@ public abstract class ComponenteFormativo {
         this.qtdAvaliacoes = qtdAvaliacoes;
     }
 
-    //verificar duplicidade na classe controller
     public void inscreverAluno(Inscricao inscricao) {
         inscricoes.add(inscricao);
     }
@@ -87,7 +85,7 @@ public abstract class ComponenteFormativo {
 
     @Override
     public String toString() {
-    // Formato sugerido: [CODIGO] Nome do Componente
+
     return String.format("[%s] %s", codigo, nome);
     }
 }

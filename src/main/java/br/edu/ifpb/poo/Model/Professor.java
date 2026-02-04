@@ -15,7 +15,6 @@ public class Professor {
     private String nome;
     private List<ComponenteFormativo> atribuicoes;
 
-    // Construtor atualizado
     public Professor(long matricula, String nome) { 
         this.matricula = matricula;
         this.nome = nome;
