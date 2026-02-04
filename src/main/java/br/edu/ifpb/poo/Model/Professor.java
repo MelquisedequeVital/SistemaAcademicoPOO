@@ -2,7 +2,6 @@ package br.edu.ifpb.poo.Model;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,11 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Professor {
 
-    private int matricula;
+    private long matricula; // <--- Mudado para long
     private String nome;
     private List<ComponenteFormativo> atribuicoes;
 
-    public Professor(int matricula, String nome) {
+    // Construtor atualizado
+    public Professor(long matricula, String nome) { 
         this.matricula = matricula;
         this.nome = nome;
         this.atribuicoes = new ArrayList<>();
@@ -34,7 +34,6 @@ public class Professor {
             this.atribuicoes.remove(atribuicao);
             atribuicao.setProfessor(null);
         }
-
     }
 
     @Override
