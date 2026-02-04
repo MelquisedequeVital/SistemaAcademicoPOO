@@ -2,26 +2,27 @@ package br.edu.ifpb.poo.Model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import br.edu.ifpb.poo.Model.Enums.SituacaoInscricao;
 import static br.edu.ifpb.poo.Model.Enums.SituacaoInscricao.EM_CURSO;
 import lombok.Getter;
-import lombok.Setter;
+
 
 @Getter
 public class Inscricao {
 
     private final Aluno aluno;
     private final ComponenteFormativo componenteFormativo;
-    @Setter
     private List<Double> notas;
-    private int periodo;
+    private final int periodo;
     private SituacaoInscricao statusAluno;
     private final String id;
 
     public Inscricao(Aluno aluno, ComponenteFormativo componenteFormativo, int periodo) {
         this.aluno = aluno;
         this.componenteFormativo = componenteFormativo;
+        this.periodo = periodo;
         this.id = periodo + aluno.getMatricula() + componenteFormativo.getCodigo();
         this.notas = new ArrayList<>();
         this.statusAluno = EM_CURSO;
@@ -83,6 +84,27 @@ public class Inscricao {
         return String.format("Disciplina: %s | Status: %s",
                 componenteFormativo.toString(), statusAluno);
     }
+
+    @Override
+    public boolean equals(Object obj){
+        if(this == obj){
+            return true;
+        }
+
+        if (!(obj instanceof Inscricao)) {
+            return false;
+        }
+
+        Inscricao inscricao = (Inscricao) obj;
+
+        return this.id.equals(inscricao.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
 
     @Override
     public String toString() {

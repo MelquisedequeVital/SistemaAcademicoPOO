@@ -20,9 +20,9 @@ public class Aluno {
         this.inscricoes = new ArrayList<>();
     }
 
-    //to-do: Verificar duplicidade
-    public void adicionarInscricao(Inscricao insc) {
-        inscricoes.add(insc);
+    //to-do: Verificar duplicidade na classe controller
+    public void adicionarInscricao(Inscricao inscricao) {
+            inscricoes.add(inscricao);
     }
 
     public void removerInscricao(String codigo) {

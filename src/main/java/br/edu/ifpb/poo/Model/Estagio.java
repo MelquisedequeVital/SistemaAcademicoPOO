@@ -24,7 +24,7 @@ public class Estagio extends ComponenteFormativo {
     //to-do: Criação de tipo de erro para Notas(entre 0 e 10)
     @Override
     public Double calcularMediaFinal(List<Double> notas) {
-        if(notas != null){
+        if(notas != null && !notas.isEmpty()){
             return notas.get(0);
         } else {
             throw new IllegalArgumentException("Quantidade de Notas Insuficiente");

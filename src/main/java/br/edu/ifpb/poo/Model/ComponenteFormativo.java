@@ -10,6 +10,7 @@ import static br.edu.ifpb.poo.Model.Enums.SituacaoInscricao.FINAL;
 import static br.edu.ifpb.poo.Model.Enums.SituacaoInscricao.REPROVADO;
 import lombok.Data;
 //sugestão: Criar interface para diminuir acoplamento e aumentar dimensionalidade
+
 @Data
 public abstract class ComponenteFormativo {
 
@@ -29,9 +30,9 @@ public abstract class ComponenteFormativo {
         this.qtdAvaliacoes = qtdAvaliacoes;
     }
 
-    //to-do: Verificar duplicidade
-    public void inscreverAluno(Inscricao insc) {
-        inscricoes.add(insc);
+    //verificar duplicidade na classe controller
+    public void inscreverAluno(Inscricao inscricao) {
+        inscricoes.add(inscricao);
     }
 
     public void desinscreverAluno(int matricula) {
@@ -46,8 +47,12 @@ public abstract class ComponenteFormativo {
     }
 
     public void setProfessor(Professor professor) {
-        this.professor = professor;
-        professor.addAtribuicao(this);
+        if (!(this.professor.equals(professor))) {
+            this.professor = professor;
+            if (professor != null) {
+                professor.addAtribuicao(this);
+            }
+        }
     }
 
     public void setQtdAvaliacoes(int qtd) {

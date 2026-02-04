@@ -2,6 +2,7 @@ package br.edu.ifpb.poo.Model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,6 +36,26 @@ public class Professor {
             atribuicao.setProfessor(null);
         }
 
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if(this == obj){
+            return true;
+        }
+
+        if (!(obj instanceof Professor)) {
+            return false;
+        }
+
+        Professor professor = (Professor) obj;
+
+        return this.matricula == professor.matricula;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(matricula);
     }
 
     @Override
