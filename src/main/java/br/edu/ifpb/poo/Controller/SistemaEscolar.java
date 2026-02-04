@@ -1,60 +1,40 @@
 package br.edu.ifpb.poo.Controller; // "Controller" com C maiúsculo para igualar a pasta
 
-import br.edu.ifpb.poo.Model.Aluno; // "Model" com M maiúsculo e removido o ".Enum"
-import java.util.ArrayList;
+import java.util.ArrayList; // "Model" com M maiúsculo e removido o ".Enum"
 import java.util.List;
-import java.util.Scanner;
+
+import br.edu.ifpb.poo.Model.Aluno;
+import br.edu.ifpb.poo.View.SistemaUI;
 
 public class SistemaEscolar {
-    
-    // Essa lista é o seu "Banco de Dados" em memória
-    private List<Aluno> alunosCadastrados = new ArrayList<>();
-    private Scanner scanner = new Scanner(System.in);
+    private List<Aluno> alunos = new ArrayList<>();
+    private SistemaUI ui = new SistemaUI();
 
-    public void menu() {
-        // Lógica simples de menu para testar o UC
-        System.out.println("1 - Cadastrar Aluno");
-        System.out.println("2 - Sair");
-        int opcao = scanner.nextInt();
-        scanner.nextLine(); // Limpar buffer
-
-        if (opcao == 1) {
-            executarUC01();
-        }
-    }
-
-    // AQUI ESTÁ A IMPLEMENTAÇÃO DO SEU UC01
-    public void executarUC01() {
-        System.out.println("--- UC01: Cadastrar Aluno ---");
-        
-        // Passo 2: Sistema pede dados
-        System.out.print("Nome do Aluno: ");
-        String nome = scanner.nextLine();
-        
-        // Passo 4 (Verificação): Verifica se já existe ANTES de pedir o resto ou salvar
-        if (buscarAlunoPorNome(nome) != null) {
-            System.out.println("ERRO: Já existe um aluno com o nome " + nome);
-            return; // Encerra o cadastro aqui (Pós-condição falhou)
-        }
-
-        System.out.print("Matrícula: ");
-        int matricula = scanner.nextInt();
-        scanner.nextLine(); // Limpar buffer
-
-        // Passo 4 (Ação): Cadastra
-        Aluno novoAluno = new Aluno(nome, matricula);
-        alunosCadastrados.add(novoAluno);
-        
-        System.out.println("Sucesso: Aluno cadastrado!");
-    }
-
-    // Método auxiliar para ajudar na verificação
-    private Aluno buscarAlunoPorNome(String nome) {
-        for (Aluno a : alunosCadastrados) {
-            if (a.getNome().equalsIgnoreCase(nome)) {
-                return a;
+    public void iniciar() {
+        int opcao;
+        do {
+            opcao = ui.menu();
+            switch (opcao) {
+                case 1 -> ui.mensagem("Saindo do sistema..."); // Opção 1 agora sai
+                case 2 -> cadastrar();
+                case 3 -> ui.exibirAlunos(alunos); 
+                default -> ui.mensagem("Opção inválida!");
             }
+        } while (opcao != 1);
+    }
+
+    private void cadastrar() {
+        try {
+            Aluno novo = ui.lerAluno();
+            // Regra de negócio: evitar duplicados (ajustado do seu original)
+            if (alunos.stream().anyMatch(a -> a.getMatricula() == novo.getMatricula())) {
+                ui.mensagem("Erro: Matrícula já existe!");
+            } else {
+                alunos.add(novo);
+                ui.mensagem("Aluno cadastrado com sucesso!");
+            }
+        } catch (Exception e) {
+            ui.mensagem("Erro nos dados digitados.");
         }
-        return null;
     }
 }
