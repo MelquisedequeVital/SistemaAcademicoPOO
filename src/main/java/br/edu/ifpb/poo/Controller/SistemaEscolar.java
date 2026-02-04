@@ -35,39 +35,20 @@ public class SistemaEscolar {
 
     private void processarOpcao(int op) {
         switch (op) {
-            case 2 ->
-                cadastrarAluno();
-            case 3 ->
-                apagarAluno();
-            case 4 ->
-                ui.listarEntidades("Alunos", db.getAlunos());
-
-            case 5 ->
-                cadastrarProfessor();
-            case 6 ->
-                apagarProfessor();
-            case 7 ->
-                ui.listarEntidades("Professores", db.getProfessores());
-
-            case 8 ->
-                cadastrarComponente();
-            case 9 ->
-                apagarComponente();
-            case 10 ->
-                ui.listarEntidades("Componentes", db.getComponentes());
-
-            case 11 ->
-                matricularAluno();
-            case 12 ->
-                desmatricularAluno();
-
-            case 13 ->
-                registrarNota();
-            case 14 ->
-                apagarNotas(); // Nova funcionalidade
-            case 15 ->
-                exibirHistoricoAluno();
-
+            case 2 -> cadastrarAluno();
+            case 3 -> apagarAluno();
+            case 4 -> ui.listarEntidades("Alunos", db.getAlunos());
+            case 5 -> cadastrarProfessor();
+            case 6 -> apagarProfessor();
+            case 7 -> ui.listarEntidades("Professores", db.getProfessores());
+            case 8 -> cadastrarComponente();
+            case 9 -> apagarComponente();
+            case 10 -> ui.listarEntidades("Componentes", db.getComponentes());
+            case 11 -> matricularAluno();
+            case 12 -> desmatricularAluno();
+            case 13 -> registrarNota();
+            case 14 -> apagarNotas();
+            case 15 -> exibirHistoricoAluno();
             default -> {
                 if (op != 1) {
                     console.logErro("Opção Inválida!");
@@ -78,8 +59,6 @@ public class SistemaEscolar {
 
     private void cadastrarAluno() {
         Aluno novo = ui.lerAluno();
-
-        // Só prossegue se o aluno não for nulo (ou seja, se a digitação foi válida)
         if (novo != null) {
             if (db.getAlunos().stream().anyMatch(a -> a.getMatricula() == novo.getMatricula())) {
                 console.logErro("Matrícula duplicada!");
@@ -93,7 +72,6 @@ public class SistemaEscolar {
     private void apagarAluno() {
         Aluno aluno = ui.selecionarDaLista("Aluno para Apagar", db.getAlunos());
         if (aluno != null) {
-            // Remove o aluno de todos os componentes onde ele estava inscrito
             for (Inscricao insc : aluno.getInscricoes()) {
                 insc.getComponenteFormativo().desinscreverAluno((int) aluno.getMatricula());
             }
@@ -104,7 +82,6 @@ public class SistemaEscolar {
 
     private void cadastrarProfessor() {
         Professor p = ui.lerProfessor();
-
         if (p != null) {
             if (db.getProfessores().stream().anyMatch(prof -> prof.getMatricula() == p.getMatricula())) {
                 console.logErro("Professor já cadastrado com esta matrícula!");
@@ -118,9 +95,8 @@ public class SistemaEscolar {
     private void apagarProfessor() {
         Professor prof = ui.selecionarDaLista("Professor para Apagar", db.getProfessores());
         if (prof != null) {
-            // Antes de apagar, removemos o vínculo com as disciplinas que ele leciona [cite: 165]
             for (ComponenteFormativo comp : db.getComponentes()) {
-                if (comp.getProfessor().equals(prof)) {
+                if (comp.getProfessor() != null && comp.getProfessor().equals(prof)) {
                     comp.setProfessor(null);
                 }
             }
@@ -129,7 +105,6 @@ public class SistemaEscolar {
         }
     }
 
-    // Arquivo: src/main/java/br/edu/ifpb/poo/Controller/SistemaEscolar.java
     private void cadastrarComponente() {
         int tipo = ui.escolherTipoComponente();
 
@@ -138,7 +113,6 @@ public class SistemaEscolar {
             return;
         }
 
-        // 1. Dados Comuns (UC03 e UC04)
         Professor prof = ui.selecionarDaLista("Professor Responsável", db.getProfessores());
         if (prof == null) {
             return;
@@ -147,7 +121,6 @@ public class SistemaEscolar {
         String codigo = ui.lerTexto("Código");
         String nome = ui.lerTexto("Nome/Descrição");
 
-        // Verificar duplicidade de código
         if (db.getComponentes().stream().anyMatch(c -> c.getCodigo().equalsIgnoreCase(codigo))) {
             console.logErro("Erro: Código já cadastrado!");
             return;
@@ -155,7 +128,7 @@ public class SistemaEscolar {
 
         ComponenteFormativo novoComponente = null;
 
-        if (tipo == 1) { // Lógica para Disciplina
+        if (tipo == 1) {
             ModalidadeDisciplina mod = ui.selecionarModalidade();
             int qtdAval = ui.lerInteiro("Quantidade de Avaliações (mín. 2)");
             if (qtdAval < 2) {
@@ -163,12 +136,11 @@ public class SistemaEscolar {
                 return;
             }
             novoComponente = new Disciplina(codigo, nome, prof, mod, qtdAval);
-        } else { // Lógica para Estágio
+        } else {
             String instituicao = ui.lerTexto("Instituição/Empresa");
             novoComponente = new Estagio(codigo, nome, prof, instituicao);
         }
 
-        // Salvar e vincular
         db.salvarComponente(novoComponente);
         prof.addAtribuicao(novoComponente);
         console.logSucesso("Componente cadastrado com sucesso!");
@@ -177,7 +149,6 @@ public class SistemaEscolar {
     private void apagarComponente() {
         ComponenteFormativo comp = ui.selecionarDaLista("Componente para Apagar", db.getComponentes());
         if (comp != null) {
-            // Remove a referência no professor e limpa as inscrições dos alunos
             if (comp.getProfessor() != null) {
                 comp.getProfessor().removeAtribuicao(comp.getCodigo());
             }
@@ -190,7 +161,6 @@ public class SistemaEscolar {
     }
 
     private void matricularAluno() {
-        // UC05/UC06: Seleção por número conforme solicitado
         Aluno aluno = ui.selecionarDaLista("Aluno para matricular", db.getAlunos());
         ComponenteFormativo comp = ui.selecionarDaLista("Componente", db.getComponentes());
 
@@ -208,10 +178,8 @@ public class SistemaEscolar {
             return;
         }
 
-        // Seleciona a inscrição específica do aluno para remover
         Inscricao insc = ui.selecionarDaLista("Inscrição para Remover", aluno.getInscricoes());
         if (insc != null) {
-            // Remove dos dois lados (Aluno e Componente) conforme as regras de negócio [cite: 164]
             aluno.removerInscricao(insc.getComponenteFormativo().getCodigo());
             insc.getComponenteFormativo().desinscreverAluno((int) aluno.getMatricula());
             console.logSucesso("Aluno desmatriculado com sucesso!");
@@ -219,14 +187,11 @@ public class SistemaEscolar {
     }
 
     private void registrarNota() {
-        // 1. Seleciona o Aluno
         Aluno aluno = ui.selecionarDaLista("Aluno", db.getAlunos());
         if (aluno == null) {
             return;
         }
 
-        // 2. Seleciona a Inscrição (Aqui o toString do componente será usado)
-        // Dica: Se a classe Inscricao não tiver toString, ela usará o do Componente
         Inscricao insc = ui.selecionarDaLista("Matrícula de " + aluno.getNome(), aluno.getInscricoes());
 
         if (insc != null) {
@@ -257,23 +222,19 @@ public class SistemaEscolar {
                 return;
             }
 
-            // Pergunta confirmação (opcional, mas seguro)
             console.logInfo("Tem certeza que deseja apagar TODAS as notas de " + aluno.getNome() + "?");
             System.out.println("01 > Sim | 02 > Não");
             if (ui.lerInteiro("Opção") == 1) {
-                insc.getNotas().clear(); // Limpa a lista de notas da inscrição
+                insc.getNotas().clear();
                 console.logSucesso("Notas removidas com sucesso!");
             }
         }
     }
 
-    // Dentro de br.edu.ifpb.poo.Controller.SistemaEscolar
     private void exibirHistoricoAluno() {
-        // 1. O usuário escolhe o aluno de uma lista numerada (sua exigência)
         Aluno alunoSelecionado = ui.selecionarDaLista("Selecione o Aluno para consulta", db.getAlunos());
 
         if (alunoSelecionado != null) {
-            // 2. Chama a View para exibir os dados internos do objeto Aluno
             ui.exibirHistoricoAluno(alunoSelecionado);
         } else {
             console.logErro("Operação cancelada ou aluno não encontrado.");

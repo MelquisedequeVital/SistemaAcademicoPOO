@@ -17,12 +17,11 @@ public class Disciplina extends ComponenteFormativo {
         this.modalidade = mod;
     }
 
-    //to-do: criar tipo de erro para Notas(Regras de Negocio)
-    // Local: br.edu.ifpb.poo.Model.Disciplina
+  
     @Override
     public Double calcularMediaFinal(List<Double> notas) {
         if (notas == null || notas.isEmpty()) {
-            return 0.0; // Evita divisão por zero
+            return 0.0;
         }
 
         Double somaNotas = 0.0;
@@ -30,7 +29,6 @@ public class Disciplina extends ComponenteFormativo {
             somaNotas += nota;
         }
 
-        // Calcula a média baseada no que já foi lançado
         return somaNotas / notas.size();
     }
 

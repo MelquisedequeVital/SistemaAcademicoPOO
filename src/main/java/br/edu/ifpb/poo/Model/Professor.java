@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Professor {
 
-    private long matricula; // <--- Mudado para long
+    private long matricula; 
     private String nome;
     private List<ComponenteFormativo> atribuicoes;
 

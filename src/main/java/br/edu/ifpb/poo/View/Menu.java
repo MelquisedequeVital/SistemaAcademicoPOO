@@ -13,9 +13,8 @@ public class Menu {
         this.itens = itens;
     }
 
-    // Arquivo: src/main/java/br/edu/ifpb/poo/View/Menu.java
     public void exibir() {
-        // Descobrir o tamanho do maior item para ajustar a borda dinamicamente
+
         int larguraConteudo = titulo.length();
         for (String item : itens) {
             if (item.length() + 10 > larguraConteudo) {
