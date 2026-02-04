@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 public class Aluno {
 
     private String nome;
-    private int matricula;
+    private long matricula;
     private List<Inscricao> inscricoes;
 
-    public Aluno(String nome, int matricula) {
+    public Aluno(String nome, long matricula) { 
         this.nome = nome;
         this.matricula = matricula;
         this.inscricoes = new ArrayList<>();
